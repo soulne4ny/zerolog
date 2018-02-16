@@ -1,7 +1,9 @@
 package zerolog
 
-import "time"
-import "sync/atomic"
+import (
+	"sync/atomic"
+	"time"
+)
 
 var (
 	// TimestampFieldName is the field name used for the timestamp field.
@@ -13,18 +15,11 @@ var (
 	// MessageFieldName is the field name used for the message field.
 	MessageFieldName = "message"
 
-	// ErrorFieldName is the field name used for error fields.
-	ErrorFieldName = "error"
+	// ErrorMarshaller is a way to marshal errors
+	ErrorFieldMarshaler = NewTextErrorMarshaler("error")
 
 	// CallerFieldName is the field name used for caller field.
 	CallerFieldName = "caller"
-
-	// ErrorStackFieldName is the field name used for error stacks.
-	ErrorStackFieldName = "stack"
-
-	// ErrorStackMarshaler extract the stack from err if any, and returns it as
-	// a marshaled JSON.
-	ErrorStackMarshaler func(err error) []byte
 
 	// TimeFieldFormat defines the time format of the Time field type.
 	// If set to an empty string, the time is formatted as an UNIX timestamp

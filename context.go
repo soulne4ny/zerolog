@@ -94,10 +94,11 @@ func (c Context) Errs(key string, errs []error) Context {
 }
 
 // Err adds the field "error" with err as a string to the logger context.
-// To customize the key name, change zerolog.ErrorFieldName.
 func (c Context) Err(err error) Context {
 	if err != nil {
-		c.l.context = json.AppendError(json.AppendKey(c.l.context, ErrorFieldName), err)
+		m := ErrorFieldMarshaler
+		c.l.context = m.AppendError(c.l.context, err)
+		// TODO support Context.Stack()
 	}
 	return c
 }

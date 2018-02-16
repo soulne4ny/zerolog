@@ -250,17 +250,13 @@ func (e *Event) Errs(key string, errs []error) *Event {
 // the err is passed to ErrorStackMarshaler and the result is appended to the
 // zerolog.ErrorStackFieldName.
 func (e *Event) Err(err error) *Event {
-	if e == nil {
-		return e
-	}
-	if e.stack && ErrorStackMarshaler != nil {
-		s := ErrorStackMarshaler(err)
-		if len(s) > 0 {
-			e.buf = append(json.AppendKey(e.buf, ErrorStackFieldName), s...)
+	if e != nil {
+		m := ErrorFieldMarshaler
+		if e.stack {
+			e.buf = m.AppendErrorWithStack(e.buf, err)
+		} else {
+			e.buf = m.AppendError(e.buf, err)
 		}
-	}
-	if err != nil {
-		e.buf = json.AppendError(json.AppendKey(e.buf, ErrorFieldName), err)
 	}
 	return e
 }

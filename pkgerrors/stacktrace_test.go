@@ -10,7 +10,7 @@ import (
 )
 
 func TestLogStack(t *testing.T) {
-	zerolog.ErrorStackMarshaler = MarshalStack
+	zerolog.ErrorFieldMarshaler = NewErrorStackPairMarshaler("error", "stack")
 
 	out := &bytes.Buffer{}
 	log := zerolog.New(out)
